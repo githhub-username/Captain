@@ -56,19 +56,16 @@ public class ManageTournamentActivity extends AppCompatActivity {
 
         tabLayout.addTab(tabLayout.newTab().setText("Tournament Info"));
         tabLayout.addTab(tabLayout.newTab().setText("Tournament Teams"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tournament Result"));
 
         new TabLayoutMediator(tabLayout, viewPager2,
                 (tab, position) -> {
                     switch (position){
                         case 0:
-                            tab.setText("Info");
+                            tab.setText("Tournament Info");
                             break;
                         case 1:
-                            tab.setText("Teams");
+                            tab.setText("Tournament Teams");
                             break;
-                        case 2:
-                            tab.setText("Result");
                     }
                 }).attach();
 
