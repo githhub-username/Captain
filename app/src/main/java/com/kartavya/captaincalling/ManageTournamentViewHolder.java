@@ -34,4 +34,5 @@ public class ManageTournamentViewHolder extends RecyclerView.ViewHolder implemen
             itemClickListener.onClick(view, getAdapterPosition(), false);
         }
     }
+
 }

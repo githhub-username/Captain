@@ -142,13 +142,18 @@ public class MyTeamActivity extends AppCompatActivity {
 
                                     @Override
                                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                        Log.e("Glide", "Chat image loading failed: " + e);
-                                        return false;
+                                        // Log detailed error message when image loading fails
+                                        Log.e("Glide", "Error loading image: " + e.getMessage(), e);
+                                        progressBar.setVisibility(View.INVISIBLE);
+                                        textView.setVisibility(View.VISIBLE);
+                                        return false; // Return false to allow Glide to call the Target's onLoadFailed method
                                     }
 
                                     @Override
                                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                        Log.d("Glide", "Chat image loaded successfully");
+                                        // Image loaded successfully
+                                        progressBar.setVisibility(View.INVISIBLE);
+                                        holder.itemView.setVisibility(View.VISIBLE);
                                         return false;
                                     }
                                 })
@@ -204,6 +209,9 @@ public class MyTeamActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+
+                        Log.e("Firebase", "Database error: " + error.getMessage(), error.toException());
+
 
                     }
                 });

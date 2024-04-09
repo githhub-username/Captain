@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kartavya.captaincalling.Interface.ItemClickListener;
 
 public class ExploreTournamentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    public TextView tournamentName, tournamentDate, tournamentState, tournamentDistrict, tournamentTeams, tournamentOrganiser, tournamentAddress, joinTournament, viewTeams, inviteTeams;
+    public TextView tournamentName, tournamentDate, tournamentState, tournamentDistrict, tournamentTeams, tournamentOrganiser, tournamentAddress, joinTournament, viewTeams,viewTournamentResult;
     public ImageView tournamentBanner;
     public LinearLayout tournamentLayout, tournamentCard;
     private ItemClickListener itemClickListener;
@@ -34,7 +34,7 @@ public class ExploreTournamentsViewHolder extends RecyclerView.ViewHolder implem
         tournamentCard = itemView.findViewById(R.id.tournament_layout);
         joinTournament = itemView.findViewById(R.id.send_join_request);
         viewTeams = itemView.findViewById(R.id.view_tournament_teams);
-        inviteTeams = itemView.findViewById(R.id.invite_teams);
+        viewTournamentResult=itemView.findViewById(R.id.view_tournament_result);
 
         itemView.setOnClickListener(this);
     }

@@ -1,5 +1,6 @@
 package com.kartavya.captaincalling;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,6 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -21,8 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import io.paperdb.Paper;
 
 public class ManageTournamentsFragment extends Fragment {
     private RecyclerView tournamentRecyclerView;
@@ -83,15 +85,13 @@ public class ManageTournamentsFragment extends Fragment {
                             String organiser = snapshot.child("OrganiserName").getValue(String.class);
                             String teams = snapshot.child("TournamentTeams").getValue(String.class);
                             String address = snapshot.child("TournamentAddress").getValue(String.class);
+                            String password = snapshot.child("TournamentPassword").getValue(String.class);
 
                             manageTournamentViewHolder.manageTournamentName.setText(name != null ? name.toUpperCase() : null);
                             Glide.with(getActivity()).load(picture).into(manageTournamentViewHolder.manageTournamentBanner);
                             manageTournamentViewHolder.manageTournamentButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-
-                                    Paper.book().write("TourKey", tournamentId);
-
                                     Intent intent = new Intent(getActivity(), ManageTournamentActivity.class);
                                     intent.putExtra("tournament_name",name);
                                     intent.putExtra("tournament_date",date);
@@ -99,7 +99,9 @@ public class ManageTournamentsFragment extends Fragment {
                                     intent.putExtra("tournament_district",district);
                                     intent.putExtra("tournament_address",address);
                                     intent.putExtra("tournament_teams",teams);
-                                    startActivity(intent);
+                                    intent.putExtra("tournament_pass",password);
+                                    showPasswordDialog(name, password);
+                                    // startActivity(intent);
                                 }
                             });
 
@@ -119,4 +121,47 @@ public class ManageTournamentsFragment extends Fragment {
         tournamentRecyclerView.setAdapter(tournamentAdapter);
         tournamentAdapter.startListening();
     }
+
+    private void showPasswordDialog(String tournamentName, String correctPassword) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_password, null);
+        builder.setView(dialogView);
+
+        EditText passwordEditText = dialogView.findViewById(R.id.passwordEditText);
+        Button submitButton = dialogView.findViewById(R.id.submitButton);
+
+        AlertDialog dialog = builder.create();
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Check if entered password matches the correct password
+                String enteredPassword = passwordEditText.getText().toString();
+                if (enteredPassword.equals(correctPassword)) {
+                    // Password is correct, dismiss the dialog and navigate to ManageTournamentActivity
+                    dialog.dismiss();
+                    Intent manageIntent = new Intent(getActivity(), ManageTournamentActivity.class);
+                    manageIntent.putExtra("tournament_name", tournamentName);
+                    startActivity(manageIntent);
+                } else {
+                    // Incorrect password, show error message
+                    Toast.makeText(getActivity(), "Incorrect password", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        dialog.show();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        tournamentAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        tournamentAdapter.stopListening();
+    }
+
 }

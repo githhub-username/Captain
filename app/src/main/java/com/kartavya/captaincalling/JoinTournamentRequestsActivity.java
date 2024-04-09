@@ -148,6 +148,8 @@ public class JoinTournamentRequestsActivity extends AppCompatActivity {
                                             joinTournamentRequestsViewHolder.requestStatus.setText("Accepted");
                                             joinTournamentRequestsViewHolder.requestStatus.setTextColor(Color.parseColor("#00BF00"));
 
+
+
                                             DatabaseReference updateTournamentTeamsRef = FirebaseDatabase.getInstance().getReference().child("tournaments").child(Paper.book().read("TournamentKey")).child("Teams").child(requestTeamName);
 
                                             final HashMap<String, Object> updateTeamRequests = new HashMap<>();

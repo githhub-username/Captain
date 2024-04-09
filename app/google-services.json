@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "134697102018-d7geb1j90st65diteg4hhtu2uitd7f91.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kartavya.captaincalling",
+            "certificate_hash": "bf3af3ae70ecd54f99b7b2e2491fec2299c82dac"
+          }
+        },
+        {
           "client_id": "134697102018-iermnsibvmsja8hpgiact9ue02ursuvu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
