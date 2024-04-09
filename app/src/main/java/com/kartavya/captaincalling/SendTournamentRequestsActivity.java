@@ -1,6 +1,7 @@
 package com.kartavya.captaincalling;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,11 @@ public class SendTournamentRequestsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     DatabaseReference sendTournamentRef;
     FirebaseRecyclerAdapter<SendTournamentRequests, SendTournamentRequestsViewHolder> adapter;
+
+    DatabaseReference sendInvitationRef, addToTournamentRef;
+
+    HashMap<String, Object> addRequestHashmap = new HashMap<>();
+    HashMap<String, Object> addRequestHashmap2 = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,39 +113,75 @@ public class SendTournamentRequestsActivity extends AppCompatActivity {
                             sendTournamentRequestsViewHolder.sendTournamentButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if (teamName != null) {
-                                        HashMap<String, Object> sendTournamentHashmap = new HashMap<>();
-
-                                        sendTournamentHashmap.put("TeamName", teamName);
-                                        sendTournamentHashmap.put("TeamCaptainName", teamCaptainName);
-                                        sendTournamentHashmap.put("TeamSport", teamSport);
-                                        sendTournamentHashmap.put("TeamDistrict", teamDistrict);
-                                        sendTournamentHashmap.put("TeamAddress", teamAddress);
-
-                                        DatabaseReference sendTournamentRef3 = FirebaseDatabase.getInstance().getReference()
+                                    String tournamentKey = Paper.book().read("TourKey");
+                                    Log.d("tour", tournamentKey);
+                                    if (tournamentKey != null && !tournamentKey.isEmpty()) {
+                                        // Use the tournament key to construct the database reference
+                                        sendInvitationRef = FirebaseDatabase.getInstance().getReference()
                                                 .child("tournaments")
-                                                .child(Paper.book().read("TournamentKey"))
+                                                .child(tournamentKey)
                                                 .child("Requests")
                                                 .child("Sent");
 
-                                        // Add the request to Firebase
-                                        sendTournamentRef3.child(teamName).setValue(sendTournamentHashmap)
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void unused) {
-                                                        Toast.makeText(SendTournamentRequestsActivity.this, "Request Sent", Toast.LENGTH_SHORT).show();
-                                                        finish();
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
+                                        addToTournamentRef = FirebaseDatabase.getInstance().getReference()
+                                                .child("tournaments")
+                                                .child(tournamentKey)
+                                                .child("Teams");
+
+                                    } else {
+                                        // Handle the case where tournament key is null or empty
+                                        Toast.makeText(SendTournamentRequestsActivity.this, "Tournament key is null or empty", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    // Create HashMap to store join request data
+                                    addRequestHashmap.put("TeamName", teamName);
+                                    addRequestHashmap.put("TeamCaptainName", teamCaptainName);
+                                    addRequestHashmap.put("TeamDistrict", teamDistrict);
+                                    addRequestHashmap.put("TeamAddress", teamAddress);
+                                    addRequestHashmap.put("TeamSport", teamSport);
+
+                                    addRequestHashmap2.put("ParticipatingTeamName", teamName);
+                                    addRequestHashmap2.put("ParticipatingTeamCaptainName", teamCaptainName);
+
+                                    // Check if database reference is not null and then proceed with adding join request
+                                    if (sendInvitationRef != null) {
+                                        sendInvitationRef.child(teamName).setValue(addRequestHashmap)
+                                                .addOnCompleteListener(task -> {
+                                                    if (task.isSuccessful()) {
+                                                        // Handle successful join request
+                                                        Toast.makeText(SendTournamentRequestsActivity.this, "Request sent successfully", Toast.LENGTH_SHORT).show();
+
+                                                        // Send notification when request is sent successfully
+                                                        // sendNotification(joinTournamentTeamName, joinTournamentTeamCaptainName);
+
+                                                        // Optionally, finish the activity or perform other actions upon success
+                                                    } else {
+                                                        // Handle failed join request
                                                         Toast.makeText(SendTournamentRequestsActivity.this, "Failed to send request", Toast.LENGTH_SHORT).show();
+                                                        Log.e("JoinTournamentActivity", "Failed to send request", task.getException());
                                                     }
                                                 });
                                     } else {
-                                        Toast.makeText(SendTournamentRequestsActivity.this, "Team name is null", Toast.LENGTH_SHORT).show();
+                                        // Handle the case where joinTournamentRef is null
+                                        Toast.makeText(SendTournamentRequestsActivity.this, "Database reference is null", Toast.LENGTH_SHORT).show();
+                                        Log.e("JoinTournamentActivity", "Database reference is null");
                                     }
+
+                                    if(addToTournamentRef != null) {
+                                        assert teamName != null;
+                                        addToTournamentRef.child(teamName).setValue(addRequestHashmap2)
+                                                .addOnCompleteListener(task -> {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(SendTournamentRequestsActivity.this, "Team joined Tournaments", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                    else {
+                                                        Toast.makeText(SendTournamentRequestsActivity.this, "Some error", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    } else {
+                                        Toast.makeText(SendTournamentRequestsActivity.this, "Database 2 reference is null", Toast.LENGTH_SHORT).show();
+                                    }
+
 
 
                                 }

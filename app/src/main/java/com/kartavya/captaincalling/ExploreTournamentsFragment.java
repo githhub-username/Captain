@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -109,18 +110,6 @@ public class ExploreTournamentsFragment extends Fragment {
                                 }
                             });
 
-                            holder.viewTournamentResult.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    // Pass the tournament key to JoinTournamentActivity
-                                    Paper.book().write("TournamentKey", tournamentId);
-                                    Intent intent = new Intent(getActivity(), ViewTournamentResultActivity.class);
-                                    // intent.putExtra("TournamentKey", tournamentId);
-                                    Log.d("ExploreTournamentsFragment", "Passing tournamentId to ViewTournamentResultActivity: " + tournamentId);
-                                    startActivity(intent);
-                                }
-                            });
-
                             holder.joinTournament.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -135,7 +124,17 @@ public class ExploreTournamentsFragment extends Fragment {
                             holder.viewTeams.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+                                    Paper.book().write("TournamentKey", tournamentId);
                                     startActivity(new Intent(getActivity(), ViewTournamentTeamsActivity.class));
+                                }
+                            });
+
+                            holder.inviteTeams.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Paper.book().write("TournamentKey", tournamentId);
+                                    Intent intent = new Intent(getActivity(), InviteTeamsActivity.class);
+                                    startActivity(intent);
                                 }
                             });
 

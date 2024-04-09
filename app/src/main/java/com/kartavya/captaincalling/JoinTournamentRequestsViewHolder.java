@@ -11,16 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kartavya.captaincalling.Interface.ItemClickListener;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class JoinTournamentRequestsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public ItemClickListener itemClickListener;
     public LinearLayout statusDecisionLayout;
     public TextView tournamentTeamName, tournamentTeamCaptainName, requestStatus;
     public ImageView acceptRequest, declineRequest;
-
-    public CircleImageView circleImageView;
-
 
 
     public JoinTournamentRequestsViewHolder(@NonNull View itemView) {
@@ -32,8 +27,6 @@ public class JoinTournamentRequestsViewHolder extends RecyclerView.ViewHolder im
         declineRequest = itemView.findViewById(R.id.decline_request);
         statusDecisionLayout = itemView.findViewById(R.id.request_decision);
         requestStatus = itemView.findViewById(R.id.request_status);
-        circleImageView = itemView.findViewById(R.id.request_join_tournament_pic);
-
 
         itemView.setOnClickListener(this);
     }

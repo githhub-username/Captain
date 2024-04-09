@@ -19,8 +19,6 @@ public class ManageTournamentFragmentAdapter extends FragmentStateAdapter {
                 return new TournamentInfoFragment();
             case 1:
                 return new TournamentTeamsFragment();
-            case 2:
-                return new TournamentResultFragment();
             default:
                 return null;
         }
@@ -28,6 +26,6 @@ public class ManageTournamentFragmentAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 }

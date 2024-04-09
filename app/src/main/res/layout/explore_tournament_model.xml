@@ -432,18 +432,18 @@
                     android:textColor="#FFFFFF"
                     android:text="Join Tournament"/>
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/invite_teams"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="#88fc03"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:textSize="15sp"
+                    android:textColor="#FFFFFF"
+                    android:text="Invite Teams"/>
 
-            <TextView
-                android:id="@+id/view_tournament_result"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:background="#00897B"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:textSize="15sp"
-                android:textColor="#FFFFFF"
-                android:text="Show Tournament Result"/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/chat_btn_at"

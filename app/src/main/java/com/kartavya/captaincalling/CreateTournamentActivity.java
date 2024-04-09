@@ -61,8 +61,8 @@ public class CreateTournamentActivity extends AppCompatActivity {
     private Button hostTournament;
     private ImageButton selectDate;
     private ProgressDialog loadingBar;
-    private EditText tournamentNameEditText, tournamentStateEditText, tournamentDistrictEditText, tournamentAddressEditText, tournamentTeamsEditText, tournamentSportEditText,tournamentPasswordEditText;
-    private String tournamentName, tournamentState, tournamentDistrict, tournamentAddress, tournamentTeams, tournamentDate, tournamentSport,tournamentPassword;
+    private EditText tournamentNameEditText, tournamentStateEditText, tournamentDistrictEditText, tournamentAddressEditText, tournamentTeamsEditText, tournamentSportEditText;
+    private String tournamentName, tournamentState, tournamentDistrict, tournamentAddress, tournamentTeams, tournamentDate, tournamentSport;
     private TextView date;
 
     @Override
@@ -91,7 +91,6 @@ public class CreateTournamentActivity extends AppCompatActivity {
         hostTournament = findViewById(R.id.create_tournament);
         selectDate = findViewById(R.id.buttonSelectDate);
         date = findViewById(R.id.textViewSelectedDate);
-        tournamentPasswordEditText=findViewById(R.id.pass_of_tournament);
 
         backButtonCreateTournament.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +172,6 @@ public class CreateTournamentActivity extends AppCompatActivity {
                 tournamentAddress = tournamentAddressEditText.getText().toString().toLowerCase();
                 tournamentTeams = tournamentTeamsEditText.getText().toString().toLowerCase();
                 tournamentSport = tournamentSportEditText.getText().toString().toLowerCase();
-                tournamentPassword=tournamentPasswordEditText.getText().toString().toLowerCase();
 
 
                 if(TextUtils.isEmpty(tournamentName)){
@@ -194,11 +192,7 @@ public class CreateTournamentActivity extends AppCompatActivity {
                 } else if(TextUtils.isEmpty(tournamentAddress)){
                     tournamentAddressEditText.setError("required");
                     tournamentAddressEditText.requestFocus();
-                }
-                else if(TextUtils.isEmpty(tournamentPassword)){
-                    tournamentPasswordEditText.setError("required");
-                    tournamentPasswordEditText.requestFocus();
-                }else if(TextUtils.isEmpty(tournamentDate)){
+                } else if(TextUtils.isEmpty(tournamentDate)){
                     date.setText("required date...");
                     date.setTextColor(0xff0000);
                 } else{
@@ -246,7 +240,6 @@ public class CreateTournamentActivity extends AppCompatActivity {
                             tournamentHashMap.put("TournamentAddress", tournamentAddress);
                             tournamentHashMap.put("TournamentTeams", tournamentTeams);
                             tournamentHashMap.put("TournamentDate", tournamentDate);
-                            tournamentHashMap.put("TournamentPassword",tournamentPassword);
                             tournamentHashMap.put("TournamentBanner",imgUri);
                             tournamentHashMap.put("OrganiserPhone", Paper.book().read("Phone"));
                             tournamentHashMap.put("OrganiserName", Paper.book().read("Name"));
